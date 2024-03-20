@@ -8,10 +8,10 @@ on:
 
 env:
   PROJECT_NAME: ClicketyClack
-  PROJECT_PATH: ClicketyClack.ConsoleHost/ClicketyClack.ConsoleHost.csproj
-  WIN_PUBLISH_PATH: ClicketyClack.ConsoleHost/bin/Release/net8.0/win-x64/publish/
-  LINUX_PUBLISH_PATH: ClicketyClack.ConsoleHost/bin/Release/net8.0/linux-x64/publish/
-  OSX_PUBLISH_PATH: ClicketyClack.ConsoleHost/bin/Release/net8.0/osx-arm64/publish/
+  PROJECT_PATH: src/ClicketyClack.ConsoleHost/ClicketyClack.ConsoleHost.csproj
+  WIN_PUBLISH_PATH: src/ClicketyClack.ConsoleHost/bin/Release/net8.0/win-x64/publish/
+  LINUX_PUBLISH_PATH: src/ClicketyClack.ConsoleHost/bin/Release/net8.0/linux-x64/publish/
+  OSX_PUBLISH_PATH: src/ClicketyClack.ConsoleHost/bin/Release/net8.0/osx-arm64/publish/
 
 jobs:
 
@@ -42,7 +42,9 @@ jobs:
         dotnet-version: 8.0.x
 
     - name: Execute unit tests
-      run: dotnet test
+      run: |
+        cd src
+        dotnet test
 
     - name: Build the application
       id: build
@@ -50,6 +52,7 @@ jobs:
         VERSION_NAME: ${{ steps.version.outputs.version }}
       run: |
           echo "The new version is $VERSION_NAME"
+          cd src
           dotnet build
           linux_zip_file_name="Linux64-$PROJECT_NAME-$VERSION_NAME.zip"
           win_zip_file_name="Winx64-$PROJECT_NAME-$VERSION_NAME.zip"
