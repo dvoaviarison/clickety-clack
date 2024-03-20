@@ -8,10 +8,10 @@ on:
 
 env:
   PROJECT_NAME: ClicketyClack
-  PROJECT_PATH: ClicketyClack.ConsoleHost/ClicketyClack.ConsoleHost.csproj
-  WIN_PUBLISH_PATH: ClicketyClack.ConsoleHost/bin/Release/net8.0/win-x64/publish/
-  LINUX_PUBLISH_PATH: ClicketyClack.ConsoleHost/bin/Release/net8.0/linux-x64/publish/
-  OSX_PUBLISH_PATH: ClicketyClack.ConsoleHost/bin/Release/net8.0/osx-arm64/publish/
+  PROJECT_PATH: src/ClicketyClack.ConsoleHost/ClicketyClack.ConsoleHost.csproj
+  WIN_PUBLISH_PATH: src/ClicketyClack.ConsoleHost/bin/Release/net8.0/win-x64/publish/
+  LINUX_PUBLISH_PATH: src/ClicketyClack.ConsoleHost/bin/Release/net8.0/linux-x64/publish/
+  OSX_PUBLISH_PATH: src/ClicketyClack.ConsoleHost/bin/Release/net8.0/osx-arm64/publish/
 
 jobs:
 
