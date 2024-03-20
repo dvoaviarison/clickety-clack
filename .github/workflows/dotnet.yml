@@ -67,20 +67,20 @@ jobs:
     - name: Create Zip File for Windows
       uses: papeloto/action-zip@v1
       with:
-        files: ${{ env.PUBLISH_PATH }}
-        dest: ${{ env.PUBLISH_PATH }}${{ steps.build.outputs.win_zip_file_name }}
+        files: ${{ env.WIN_PUBLISH_PATH }}
+        dest: ${{ env.WIN_PUBLISH_PATH }}${{ steps.build.outputs.win_zip_file_name }}
 
     - name: Create Zip File for Linux
       uses: papeloto/action-zip@v1
       with:
-        files: ${{ env.PUBLISH_PATH }}
-        dest: ${{ env.PUBLISH_PATH }}${{ steps.build.outputs.linux_zip_file_name }}
+        files: ${{ env.LINUX_PUBLISH_PATH }}
+        dest: ${{ env.LINUX_PUBLISH_PATH }}${{ steps.build.outputs.linux_zip_file_name }}
         
     - name: Create Zip File for MacOS
       uses: papeloto/action-zip@v1
       with:
-        files: ${{ env.PUBLISH_PATH }}
-        dest: ${{ env.PUBLISH_PATH }}${{ steps.build.outputs.osx_zip_file_name }}
+        files: ${{ env.OSX_PUBLISH_PATH }}
+        dest: ${{ env.OSX_PUBLISH_PATH }}${{ steps.build.outputs.osx_zip_file_name }}
           
     - name: Create Release Tag
       id: create_release_tag
