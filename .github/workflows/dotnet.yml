@@ -14,6 +14,8 @@ env:
 jobs:
 
   build:
+    outputs:
+      zip_file_name: ${{steps.build.outputs.zip_file_name}}
     strategy:
       matrix:
         configuration: [Debug]
@@ -63,14 +65,14 @@ jobs:
           
     - name: Create Release Tag
       id: create_release_tag
-      if: ${{ github.ref == 'refs/heads/main' && success() }}
+      if: ${{ github.ref == 'refs/heads/CICD' && success() }}
       run: |
         git tag ${{ steps.version.outputs.version }}
         git push --tags
         
     - name: Create Release
       id: create_release
-      if: ${{ github.ref == 'refs/heads/main' && success() }}
+      if: ${{ github.ref == 'refs/heads/CICD' && success() }}
       uses: ncipollo/release-action@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -81,7 +83,7 @@ jobs:
         prerelease: false
         
     - name: Upload Zip
-      if: ${{ github.ref == 'refs/heads/main' && success() }}
+      if: ${{ github.ref == 'refs/heads/CICD' && success() }}
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
