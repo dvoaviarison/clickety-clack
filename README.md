@@ -1,3 +1,4 @@
+[![Dotnet CI](https://github.com/dvoaviarison/clickety-clack/actions/workflows/dotnet.yml/badge.svg)](https://github.com/dvoaviarison/clickety-clack/actions/workflows/dotnet.yml)
 # Clickety-Clack aka EW-Desktop-Remote
 A simple, open source and cross-platform EasyWorship Remote App that works on laptops (mac/windows/linux).
 This allows for the use of a clicker without losing control on you EW main computer.
