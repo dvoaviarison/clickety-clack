@@ -141,7 +141,21 @@ public class EWRemoteSimulator : IEWRemoteSimulator
                 }
                 catch (Exception exception)
                 {
-                    _logger.LogError(exception, exception.Message);
+                    _logger.LogError($"\u2620\ufe0f {exception.Message}");
+                    _logger.LogDebug(exception.StackTrace);
+                    if (exception.Message.Contains("Connection reset by peer", StringComparison.OrdinalIgnoreCase))
+                    {
+                        try
+                        {
+                            await _client.DisconnectAsync();
+                            await _client.ConnectAsync();
+                            await _client.SendAsync(Messages.PairingRequest);
+                        }
+                        catch (Exception)
+                        {
+                            // ignored
+                        }
+                    }
                 }
 
                 Thread.Sleep(500);
