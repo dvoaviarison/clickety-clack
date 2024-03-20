@@ -1,1 +1,1 @@
-dotnet EWRemote.ConsoleHost.dll
+dotnet ClicketyClack.ConsoleHost.dll
