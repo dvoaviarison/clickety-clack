@@ -13,7 +13,7 @@ Why Choose Complexity Over Simplicity?
    - Here is how it works 
 
 
-  ![Architecture](./Documentation/ClicketyClack.png)
+  ![Architecture](./docs/imgs/ClicketyClack.png)
 
 ## How to use
 This app is cross platform and can be used in Windows, Linux or MacOS.
@@ -24,6 +24,6 @@ Download latest version [HERE](https://github.com/dvoaviarison/Clickety-Clack/re
 ```bash
 dotnet ClicketyClack.ConsoleHost.dll
 ```
-![Screenshot](./Documentation/ClicketyClack.gif)
+![Screenshot](./docs/imgs/ClicketyClack.gif)
 ## Want to contribute
 Fork, PR, Get a review, Merge
