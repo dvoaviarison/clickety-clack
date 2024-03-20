@@ -1,0 +1,135 @@
+name: .NET Core
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+env:
+  PROJECT_NAME: ClicketyClack
+  PROJECT_PATH: ClicketyClack.ConsoleHost/ClicketyClack.ConsoleHost.csproj
+  WIN_PUBLISH_PATH: ClicketyClack.ConsoleHost/bin/Release/net8.0/win-x64/publish/
+  LINUX_PUBLISH_PATH: ClicketyClack.ConsoleHost/bin/Release/net8.0/linux-x64/publish/
+  OSX_PUBLISH_PATH: ClicketyClack.ConsoleHost/bin/Release/net8.0/osx-arm64/publish/
+
+jobs:
+
+  build:
+    outputs:
+      linux_zip_file_name: ${{steps.build.outputs.zip_file_name}}
+      win_zip_file_name: ${{steps.build.outputs.zip_file_name}}
+      osx_zip_file_name: ${{steps.build.outputs.zip_file_name}}
+    runs-on: ubuntu-latest  # For a list of available runner types, refer to
+                           # https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        ref: ${{ github.head_ref }}
+        fetch-depth: 0
+
+    - name: Use Git Version
+      id: version
+      uses: codacy/git-version@2.7.1
+      with:
+        prefix: v
+        release-branch: main
+
+    - name: Install .NET Core
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
+
+    - name: Execute unit tests
+      run: dotnet test
+
+    - name: Build the application
+      id: build
+      env:
+        VERSION_NAME: ${{ steps.version.outputs.version }}
+      run: |
+          echo "The new version is $VERSION_NAME"
+          dotnet build
+          linux_zip_file_name="Linux64-$PROJECT_NAME-$VERSION_NAME.zip"
+          win_zip_file_name="Winx64-$PROJECT_NAME-$VERSION_NAME.zip"
+          osx_zip_file_name="OsxArm64-$PROJECT_NAME-$VERSION_NAME.zip"
+          echo "linux_zip_file_name=$linux_zip_file_name" >> $GITHUB_OUTPUT
+          echo "win_zip_file_name=$win_zip_file_name" >> $GITHUB_OUTPUT
+          echo "osx_zip_file_name=$osx_zip_file_name" >> $GITHUB_OUTPUT
+
+    - name: Publish App
+      run: |
+        dotnet publish ${{ env.PROJECT_PATH }} -c Release --runtime win-x64 -p:IncludeNativeLibrariesForSelfExtract=true --self-contained true 
+        dotnet publish ${{ env.PROJECT_PATH }} -c Release --runtime linux-x64 -p:IncludeNativeLibrariesForSelfExtract=true --self-contained true
+        dotnet publish ${{ env.PROJECT_PATH }} -c Release --runtime osx-arm64 -p:IncludeNativeLibrariesForSelfExtract=true --self-contained true
+  
+    - name: Create Zip File for Windows
+      uses: papeloto/action-zip@v1
+      with:
+        files: ${{ env.WIN_PUBLISH_PATH }}
+        dest: ${{ env.WIN_PUBLISH_PATH }}${{ steps.build.outputs.win_zip_file_name }}
+
+    - name: Create Zip File for Linux
+      uses: papeloto/action-zip@v1
+      with:
+        files: ${{ env.LINUX_PUBLISH_PATH }}
+        dest: ${{ env.LINUX_PUBLISH_PATH }}${{ steps.build.outputs.linux_zip_file_name }}
+        
+    - name: Create Zip File for MacOS
+      uses: papeloto/action-zip@v1
+      with:
+        files: ${{ env.OSX_PUBLISH_PATH }}
+        dest: ${{ env.OSX_PUBLISH_PATH }}${{ steps.build.outputs.osx_zip_file_name }}
+          
+    - name: Create Release Tag
+      id: create_release_tag
+      if: ${{ github.ref == 'refs/heads/main' && success() }}
+      run: |
+        git tag ${{ steps.version.outputs.version }}
+        git push --tags
+        
+    - name: Create Release
+      id: create_release
+      if: ${{ github.ref == 'refs/heads/main' && success() }}
+      uses: ncipollo/release-action@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag: ${{ steps.version.outputs.version }}
+        name: ${{ steps.version.outputs.version }}
+        draft: false
+        prerelease: false
+        
+    - name: Upload Linux Zip
+      if: ${{ github.ref == 'refs/heads/main' && success() }}
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ${{ env.LINUX_PUBLISH_PATH }}${{ steps.build.outputs.linux_zip_file_name }}
+        asset_name: ${{ steps.build.outputs.linux_zip_file_name }}
+        asset_content_type: application/zip
+        
+    - name: Upload Windows Zip
+      if: ${{ github.ref == 'refs/heads/main' && success() }}
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ${{ env.WIN_PUBLISH_PATH }}${{ steps.build.outputs.win_zip_file_name }}
+        asset_name: ${{ steps.build.outputs.win_zip_file_name }}
+        asset_content_type: application/zip
+        
+    - name: Upload MacOS Zip
+      if: ${{ github.ref == 'refs/heads/main' && success() }}
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ${{ env.OSX_PUBLISH_PATH }}${{ steps.build.outputs.osx_zip_file_name }}
+        asset_name: ${{ steps.build.outputs.osx_zip_file_name }}
+        asset_content_type: application/zip
