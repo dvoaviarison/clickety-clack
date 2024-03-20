@@ -24,6 +24,7 @@ Download latest version [HERE](https://github.com/dvoaviarison/Clickety-Clack/re
 ```bash
 dotnet ClicketyClack.ConsoleHost.dll
 ```
-<img src="./docs/imgs/ClicketyClack.gif" alt="Screenshot" loop=infinite>
+![Screenshot](./docs/imgs/ClicketyClack.gif)
+
 ## Want to contribute
 Fork, PR, Get a review, Merge
