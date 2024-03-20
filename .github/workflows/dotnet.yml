@@ -9,14 +9,14 @@ on:
 env:
   PROJECT_NAME: ClicketyClack
   PROJECT_PATH: ClicketyClack.ConsoleHost/ClicketyClack.ConsoleHost.csproj
-  PUBLISH_PATH: ClicketyClack.ConsoleHost/bin/Release/net8.0/osx-arm64/publish/
+  PUBLISH_PATH: ClicketyClack.ConsoleHost/bin/Release/net8.0/linux-x64/publish/
 
 jobs:
 
   build:
     outputs:
       zip_file_name: ${{steps.build.outputs.zip_file_name}}
-    runs-on: macos-latest  # For a list of available runner types, refer to
+    runs-on: ubuntu-latest  # For a list of available runner types, refer to
                            # https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on
     steps:
     - name: Checkout
