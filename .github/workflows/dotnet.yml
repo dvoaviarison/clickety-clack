@@ -16,17 +16,13 @@ jobs:
   build:
     outputs:
       zip_file_name: ${{steps.build.outputs.zip_file_name}}
-    strategy:
-      matrix:
-        configuration: [Debug]
-
     runs-on: macos-latest  # For a list of available runner types, refer to
                            # https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on
-
     steps:
     - name: Checkout
       uses: actions/checkout@v4
       with:
+        ref: ${{ github.head_ref }}
         fetch-depth: 0
 
     - name: Use Git Version
@@ -44,13 +40,13 @@ jobs:
     - name: Execute unit tests
       run: dotnet test
 
-    - name: Restore the application
+    - name: Build the application
       id: build
       env:
         VERSION_NAME: ${{ steps.version.outputs.version }}
       run: |
+          echo "The new version is $VERSION_NAME"
           dotnet build
-          dotnet restore
           zip_file_name="$PROJECT_NAME-$VERSION_NAME-release.zip"
           echo "zip_file_name=$zip_file_name" >> $GITHUB_OUTPUT
 
