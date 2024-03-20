@@ -124,7 +124,7 @@ public class EWRemoteSimulator : IEWRemoteSimulator
 
                             if (Status.Permissions is 1 && previousPermissions is 0)
                             {
-                                _logger.LogInformation("\ud83d\udd13 Remote command permission granted.");
+                                _logger.LogInformation("\ud83d\udd13 Remote command permission granted. You can start using the app now!");
                             }
                         }
 
@@ -135,7 +135,7 @@ public class EWRemoteSimulator : IEWRemoteSimulator
                         
                         if (received.Contains("\"action\":\"paired\"", StringComparison.OrdinalIgnoreCase))
                         {
-                            _logger.LogInformation("\ud83d\udfe2 Remote connected and paired. you can start using the app now!");
+                            _logger.LogInformation("\ud83d\udfe2 Remote connected and paired");
                         }
                     }
                 }

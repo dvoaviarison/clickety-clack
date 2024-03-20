@@ -1,19 +1,26 @@
-# Clickety-Clack aka EW-Clicker-Enabler
-A simple, open source, Easy-Worship Remote App that works on laptops (mac/windows/linux).
+# Clickety-Clack aka EW-Desktop-Remote
+A simple, open source and cross-platform EasyWorship Remote App that works on laptops (mac/windows/linux).
 This allows for the use of a clicker without losing control on you EW main computer.
 
 ## How it works
-Why make it simple if it can be complicated?
+Why Choose Complexity Over Simplicity?
 
-Here is why:
-- If you use a clicker against the main Easy-Worship machine, you will take full control over it i.e. nothing else but Easy Software can be used on that machine until the usage of the clicker is complete
-- The solution seams to be to use the EW Remote App on your phone. That will unlock the main Easy-Worship, BUT the app is on the phone, hence very sensitive and needs attention. A singer would not want to look at the app each time there is a slide to move.
-- The best of both words would be to 
-  - NOT lock the main Easy-Worship computer
-  - Get the super perks of using a clicker
-- THE ANSWER is 💡 - guess what? - Clickety-Clack. Here is how it works
+- **Dilemma**: You want control over the main EasyWorship machine.
+   - **Clicker Solution**: Using a clicker is an easy way to control the slides, but it locks the machine to Easy-Worship only.
+   - **Phone App Solution**: The EW Remote App unlocks Easy-Worship, but it’s sensitive and distracting.
+- **Ideal Solution**: 
+   - **Clickety-Clack**: Slide control without locking down the main computer. Best of both worlds! 🍌💡.
+   - Here is how it works
+  ![Architecture](./Documentation/ClicketyClack.png)
 
-![Architecture](./Documentation/ClicketyClack.png)
-
+## How to use
+This app is cross platform and can be used in Windows, Linux or MacOS.
+Download latest version [HERE](https://github.com/dvoaviarison/Clickety-Clack/releases) and extract the zip file
+- For windows: Double click on `ClicketyClack.ConsoleHost.exe`
+- For Linux and MacOS: Run the following command line from within the app folder
+```bash
+dotnet ClicketyClack.ConsoleHost.dll
+```
+![Screenshot](./Documentation/ClicketyClack.gif)
 ## Want to contribute
 Fork, PR, Get a review, Merge
