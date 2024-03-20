@@ -51,7 +51,7 @@ jobs:
       run: |
           dotnet build
           dotnet restore
-          zip_file_name = "$PROJECT_NAME-VERSION_NAME-release.zip"
+          zip_file_name="$PROJECT_NAME-$VERSION_NAME-release.zip"
           echo "zip_file_name=$zip_file_name" >> $GITHUB_OUTPUT
 
     - name: Publish App
