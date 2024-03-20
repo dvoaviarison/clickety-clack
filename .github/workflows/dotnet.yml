@@ -54,7 +54,9 @@ jobs:
           linux_zip_file_name="Linux64$PROJECT_NAME-$VERSION_NAME.zip"
           win_zip_file_name="Winx64$PROJECT_NAME-$VERSION_NAME.zip"
           osx_zip_file_name="OsxArm64$PROJECT_NAME-$VERSION_NAME.zip"
-          echo "linux_zip_file_name=$zip_file_name" >> $GITHUB_OUTPUT
+          echo "linux_zip_file_name=$linux_zip_file_name" >> $GITHUB_OUTPUT
+          echo "win_zip_file_name=$win_zip_file_name" >> $GITHUB_OUTPUT
+          echo "osx_zip_file_name=$osx_zip_file_name" >> $GITHUB_OUTPUT
 
     - name: Publish App
       run: |
