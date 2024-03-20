@@ -10,7 +10,9 @@ Why Choose Complexity Over Simplicity?
    - **Phone App Solution**: The EW Remote App unlocks Easy-Worship, but it’s sensitive and distracting.
 - **Ideal Solution**: 
    - **Clickety-Clack**: Slide control without locking down the main computer. Best of both worlds! 🍌💡.
-   - Here is how it works
+   - Here is how it works 
+
+
   ![Architecture](./Documentation/ClicketyClack.png)
 
 ## How to use
