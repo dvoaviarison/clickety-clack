@@ -1,0 +1,92 @@
+name: .NET Core Desktop
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+env:
+  PROJECT_NAME: ClicketyClack
+  PROJECT_PATH: ClicketyClack.ConsoleHost/ClicketyClack.ConsoleHost.csproj
+  PUBLISH_PATH: ClicketyClack.ConsoleHost/bin/Release/net8.0/osx-arm64/publish/
+
+jobs:
+
+  build:
+    strategy:
+      matrix:
+        configuration: [Debug, Release]
+
+    runs-on: macos-latest  # For a list of available runner types, refer to
+                           # https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Use Git Version
+      id: version
+      uses: codacy/git-version@2.7.1
+      with:
+        prefix: v
+        release-branch: main
+
+    - name: Install .NET Core
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
+
+    - name: Execute unit tests
+      run: dotnet test
+
+    - name: Restore the application
+      id: build
+      env:
+        VERSION_NAME: ${{ steps.version.outputs.version }}
+      run: |
+          dotnet build
+          dotnet restore
+          zip_file_name = "$PROJECT_NAME-VERSION_NAME-release.zip"
+          echo "zip_file_name=$zip_file_name" >> $GITHUB_OUTPUT
+
+    - name: Publish App
+      run: dotnet publish ${{ env.PROJECT_PATH }} -c Release -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true --self-contained true 
+
+    - name: Create Zip File
+      uses: papeloto/action-zip@v1
+      with:
+        files: ${{ env.PUBLISH_PATH }}
+        dest: ${{ env.PUBLISH_PATH }}${{ steps.build.outputs.zip_file_name }}
+          
+    - name: Create Release Tag
+      id: create_release_tag
+      if: ${{ github.ref == 'refs/heads/main' && success() }}
+      run: |
+        git tag ${{ steps.version.outputs.version }}
+        git push --tags
+        
+    - name: Create Release
+      id: create_release
+      if: ${{ github.ref == 'refs/heads/main' && success() }}
+      uses: ncipollo/release-action@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag: ${{ steps.version.outputs.version }}
+        name: ${{ steps.version.outputs.version }}
+        draft: false
+        prerelease: false
+        
+    - name: Upload Zip
+      if: ${{ github.ref == 'refs/heads/main' && success() }}
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ${{ env.PUBLISH_PATH }}
+        asset_name: ${{ steps.build.outputs.zip_file_name }}
+        asset_content_type: application/zip
