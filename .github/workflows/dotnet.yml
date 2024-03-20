@@ -63,7 +63,6 @@ jobs:
 
     - name: Publish App
       run: |
-        cd src
         dotnet publish ${{ env.PROJECT_PATH }} -c Release --runtime win-x64 -p:IncludeNativeLibrariesForSelfExtract=true --self-contained true 
         dotnet publish ${{ env.PROJECT_PATH }} -c Release --runtime linux-x64 -p:IncludeNativeLibrariesForSelfExtract=true --self-contained true
         dotnet publish ${{ env.PROJECT_PATH }} -c Release --runtime osx-arm64 -p:IncludeNativeLibrariesForSelfExtract=true --self-contained true
