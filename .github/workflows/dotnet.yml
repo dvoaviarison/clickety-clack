@@ -108,7 +108,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ${{ env.PUBLISH_PATH }}${{ steps.build.outputs.linux_zip_file_name }}
+        asset_path: ${{ env.LINUX_PUBLISH_PATH }}${{ steps.build.outputs.linux_zip_file_name }}
         asset_name: ${{ steps.build.outputs.linux_zip_file_name }}
         asset_content_type: application/zip
         
@@ -119,7 +119,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ${{ env.PUBLISH_PATH }}${{ steps.build.outputs.win_zip_file_name }}
+        asset_path: ${{ env.WIN_PUBLISH_PATH }}${{ steps.build.outputs.win_zip_file_name }}
         asset_name: ${{ steps.build.outputs.win_zip_file_name }}
         asset_content_type: application/zip
         
@@ -130,6 +130,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ${{ env.PUBLISH_PATH }}${{ steps.build.outputs.osx_zip_file_name }}
+        asset_path: ${{ env.OSX_PUBLISH_PATH }}${{ steps.build.outputs.osx_zip_file_name }}
         asset_name: ${{ steps.build.outputs.osx_zip_file_name }}
         asset_content_type: application/zip
