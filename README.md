@@ -17,6 +17,7 @@ Why Choose Complexity Over Simplicity?
 
 ## How to use
 This app is cross platform and can be used in Windows, Linux or MacOS.
+
 Download latest version [HERE](https://github.com/dvoaviarison/Clickety-Clack/releases) and extract the zip file
 - For windows: Double click on `ClicketyClack.ConsoleHost.exe`
 - For Linux and MacOS: Run the following command line from within the app folder
