@@ -1,0 +1,29 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClicketyClack.ConsoleHost", "ClicketyClack.ConsoleHost\ClicketyClack.ConsoleHost.csproj", "{6735902E-66A6-4091-8FB9-979FDF492074}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClicketyClack.Core", "ClicketyClack.Core\ClicketyClack.Core.csproj", "{E390E1EB-6BA0-43A4-867F-5299A80E6BF4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{5E5A94EA-B2E7-40A0-8857-DB43A2B11971}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		README.md = README.md
+		LICENSE = LICENSE
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6735902E-66A6-4091-8FB9-979FDF492074}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6735902E-66A6-4091-8FB9-979FDF492074}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6735902E-66A6-4091-8FB9-979FDF492074}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6735902E-66A6-4091-8FB9-979FDF492074}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E390E1EB-6BA0-43A4-867F-5299A80E6BF4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E390E1EB-6BA0-43A4-867F-5299A80E6BF4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E390E1EB-6BA0-43A4-867F-5299A80E6BF4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E390E1EB-6BA0-43A4-867F-5299A80E6BF4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

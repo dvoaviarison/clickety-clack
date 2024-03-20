@@ -1,0 +1,1 @@
+dotnet EWRemote.ConsoleHost.dll
