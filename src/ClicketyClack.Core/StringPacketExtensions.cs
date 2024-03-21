@@ -7,6 +7,8 @@ namespace ClicketyClack.Core;
 
 public static class StringPacketExtensions
 {
+    internal const string JsonPattern = @"{[^{}]*[^{}]}"; // Excludes empty brackets;
+    
     public static bool IsValidJson(this string jsonString)
     {
         if (string.IsNullOrEmpty(jsonString))
@@ -32,8 +34,7 @@ public static class StringPacketExtensions
             return null;
         }
 
-        var jsonPattern = @"{[^{}]*[^{}]}"; // Excludes empty brackets
-        foreach (Match match in Regex.Matches(rawPacketString, jsonPattern))
+        foreach (Match match in Regex.Matches(rawPacketString, JsonPattern))
         {
             var jsonString = match.Value;
             if (jsonString.IsValidJson())
