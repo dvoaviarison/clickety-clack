@@ -28,7 +28,7 @@ Console.CancelKeyPress += async (_, _) =>
     logger.LogInformation("\ud83c\udd91 Cancellation received. Terminating Connections Gracefully...");
     cancellationSource.Cancel();
     await remote.TerminatePairingAsync();
-    Thread.Sleep(7000);
+    Thread.Sleep(3000);
     logger.LogInformation("\ud83d\udc4b Connections Terminated Gracefully");
 };
 await remote.SetupPairingAsync(cancellationSource.Token);

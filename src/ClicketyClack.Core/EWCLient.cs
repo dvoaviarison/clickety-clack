@@ -40,7 +40,7 @@ public class EWCLient : IEWClient
 
     public async Task<string> ReceiveAsync()
     {
-        var buffer = new byte[1_024];
+        var buffer = new byte[8192];
         var received = await _client.ReceiveAsync(buffer, SocketFlags.None);
         if (received is not 0)
         {
