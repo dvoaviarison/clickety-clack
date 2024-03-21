@@ -109,11 +109,14 @@ public class EWRemoteSimulator : IEWRemoteSimulator
             {
                 try
                 {
-                    var received = await _client.ReceiveAsync();
-                    if (!string.IsNullOrEmpty(received))
+                    var receivedRaw = await _client.ReceiveAsync();
+                    _logger.LogTrace($"ReceivedRaw: {receivedRaw}");
+                    
+                    var received = receivedRaw.GetFirstPacketObject();
+                    if (!string.IsNullOrEmpty(receivedRaw) && !string.IsNullOrEmpty(received))
                     {
                         _logger.LogDebug($"Received: {received}");
-                        if (received.Contains("\"action\":\"status\"", StringComparison.OrdinalIgnoreCase))
+                        if (received.IsStatusMessage())
                         {
                             var previousPermissions = Status.Permissions;
                             Status = JsonSerializer.Deserialize<Status>(received, _deSerializerOptions) ?? new Status();
@@ -128,12 +131,12 @@ public class EWRemoteSimulator : IEWRemoteSimulator
                             }
                         }
 
-                        if (received.Contains("\"action\":\"notPaired\"", StringComparison.OrdinalIgnoreCase))
+                        if (received.IsNotPairedMessage())
                         {
                             _logger.LogInformation("\ud83d\udfe1 Remote connected but NOT paired. Please reach our to EW admin.");
                         }
                         
-                        if (received.Contains("\"action\":\"paired\"", StringComparison.OrdinalIgnoreCase))
+                        if (received.IsPairedMessage())
                         {
                             _logger.LogInformation("\ud83d\udfe2 Remote connected and paired");
                         }
