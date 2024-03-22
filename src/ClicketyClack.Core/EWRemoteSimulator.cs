@@ -162,8 +162,7 @@ public class EWRemoteSimulator : IEWRemoteSimulator
                 }
                 catch (Exception exception)
                 {
-                    _logger.LogError($"\u2620\ufe0f Reception failed exception: {exception.Message}");
-                    _logger.LogDebug(exception.StackTrace);
+                    _logger.LogDebug($"Reception failed {exception.Message}: {exception.StackTrace}");
                 }
 
                 Thread.Sleep(500);
