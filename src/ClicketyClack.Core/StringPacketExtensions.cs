@@ -1,5 +1,6 @@
 // Copyright (c) 2024 DVoaviarison
 using System;
+using System.Runtime.InteropServices;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 
@@ -54,5 +55,14 @@ public static class StringPacketExtensions
 
     public static bool IsPairedMessage(this string packetString) 
         => packetString.Contains("\"action\":\"paired\"", StringComparison.OrdinalIgnoreCase); 
+
+    public static bool IsBrokenPipeMessage(this string? packetExceptionMessage)
+    {
+        var markerString = RuntimeInformation.IsOSPlatform(OSPlatform.Windows)
+            ? "An established connection was aborted"
+            : "Broken pipe";
+
+        return packetExceptionMessage?.Contains(markerString, StringComparison.OrdinalIgnoreCase) is true;
+    }
 }
 
