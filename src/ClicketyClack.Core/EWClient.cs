@@ -2,26 +2,27 @@
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using ClicketyClack.Core.Models;
 
 namespace ClicketyClack.Core;
 
 public class EWClient : IEWClient
 {
     private readonly Socket _client;
-    private readonly IPEndPoint _ipEndPoint;
 
-    public EWClient(string ipAddress, int port)
+    public EWClient()
     {
-        _ipEndPoint = new IPEndPoint(IPAddress.Parse(ipAddress), port);
         _client = new Socket(
-            _ipEndPoint.AddressFamily,
+            AddressFamily.InterNetwork,
             SocketType.Stream,
             ProtocolType.Tcp);
     }
-
-    public async Task ConnectAsync()
+    
+    public async Task ConnectAsync(ServerInfo serverInfo)
     {
-        await _client.ConnectAsync(_ipEndPoint);
+        await _client.ConnectAsync(new IPEndPoint(
+            IPAddress.Parse(serverInfo.IPAddress), 
+            serverInfo.Port));
     }
 
     public async Task DisconnectAsync()

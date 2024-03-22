@@ -8,6 +8,7 @@ namespace ClicketyClack.Core;
 
 public class EWRemoteSimulator : IEWRemoteSimulator
 {
+    private readonly IEWServerFinder _finder;
     private readonly IEWClient _client;
     private readonly ILogger<EWRemoteSimulator> _logger;
     private const int HeartBeatsEveryMs = 3000;
@@ -18,16 +19,23 @@ public class EWRemoteSimulator : IEWRemoteSimulator
         NumberHandling = JsonNumberHandling.AllowReadingFromString
     };
 
-    public EWRemoteSimulator(IEWClient client, ILogger<EWRemoteSimulator> logger)
+    public EWRemoteSimulator(
+        IEWServerFinder finder,
+        IEWClient client, 
+        ILogger<EWRemoteSimulator> logger)
     {
+        _finder = finder;
         _client = client;
         _logger = logger;
     }
     
-    public async Task SetupPairingAsync(CancellationToken cancellationToken)
+    public async Task InitiatePairingAsync(CancellationToken cancellationToken)
     {
+        // Discover the server
+        var serverInfo = await _finder.FindAsync();
+        
         // Connect
-        await _client.ConnectAsync();
+        await _client.ConnectAsync(serverInfo);
         
         // Start HeartBeat Job
         RunHeartBeats(HeartBeatsEveryMs, cancellationToken);
@@ -83,7 +91,7 @@ public class EWRemoteSimulator : IEWRemoteSimulator
                 }
                 catch (Exception exception)
                 {
-                    _logger.LogError($"\ud83d\udc94 Heartbeat stopped with exception: {exception.Message}");
+                    _logger.LogError($"\ud83d\udc94 Heartbeat failed to pump: {exception.Message}");
                 }
             
                 Thread.Sleep(sendEveryMs);
@@ -139,15 +147,16 @@ public class EWRemoteSimulator : IEWRemoteSimulator
                 }
                 catch (Exception exception)
                 {
-                    _logger.LogError($"\u2620\ufe0f Reception stopped with exception: {exception.Message}");
+                    _logger.LogError($"\u2620\ufe0f Reception failed exception: {exception.Message}");
                     _logger.LogDebug(exception.StackTrace);
                     if (exception.Message.Contains("Connection reset by peer", StringComparison.OrdinalIgnoreCase))
                     {
                         try
                         {
-                            _logger.LogInformation($"\ud83d\udd59 Trying to reconnect...");
+                            _logger.LogInformation($"\ud83d\udd59 Receiver Trying to reconnect...");
                             await _client.DisconnectAsync();
-                            await _client.ConnectAsync();
+                            var serverInfo = await _finder.FindAsync();
+                            await _client.ConnectAsync(serverInfo);
                             await _client.SendAsync(Messages.PairingRequest);
                         }
                         catch (Exception)

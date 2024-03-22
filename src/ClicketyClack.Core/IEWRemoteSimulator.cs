@@ -3,7 +3,7 @@ namespace ClicketyClack.Core;
 
 public interface IEWRemoteSimulator : IDisposable
 {
-    Task SetupPairingAsync(CancellationToken cancellationToken);
+    Task InitiatePairingAsync(CancellationToken cancellationToken);
 
     Task NextSlideAsync();
 

@@ -17,11 +17,11 @@ var logger = loggerFactory.CreateLogger<Program>();
 
 // Bootstrap
 var finder = new EWServerFinder(loggerFactory.CreateLogger<EWServerFinder>());
-var serverInfo = await finder.FindAsync();
-var client = new EWClient(serverInfo.IPAddress, serverInfo.Port);
-
-// Run
-using var remote = new EWRemoteSimulator(client, loggerFactory.CreateLogger<EWRemoteSimulator>());
+var client = new EWClient();
+using var remote = new EWRemoteSimulator(
+    finder,
+    client,
+    loggerFactory.CreateLogger<EWRemoteSimulator>());
 var cancellationSource = new CancellationTokenSource();
 Console.CancelKeyPress += async (_, _) =>
 {
@@ -31,7 +31,9 @@ Console.CancelKeyPress += async (_, _) =>
     Thread.Sleep(3000);
     logger.LogInformation("\ud83d\udc4b Connections Terminated Gracefully");
 };
-await remote.SetupPairingAsync(cancellationSource.Token);
+await remote.InitiatePairingAsync(cancellationSource.Token);
+
+// Run
 while (!cancellationSource.Token.IsCancellationRequested)
 {
     var keyInfo = Console.ReadKey(intercept: true);
