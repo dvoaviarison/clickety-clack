@@ -18,14 +18,14 @@ var logger = loggerFactory.CreateLogger<Program>();
 // Bootstrap
 var finder = new EWServerFinder(loggerFactory.CreateLogger<EWServerFinder>());
 var serverInfo = await finder.FindAsync();
-var client = new EWCLient(serverInfo.IPAddress, serverInfo.Port);
+var client = new EWClient(serverInfo.IPAddress, serverInfo.Port);
 
 // Run
 using var remote = new EWRemoteSimulator(client, loggerFactory.CreateLogger<EWRemoteSimulator>());
 var cancellationSource = new CancellationTokenSource();
 Console.CancelKeyPress += async (_, _) =>
 {
-    logger.LogInformation("\ud83c\udd91 Cancellation received. Terminating Connections Gracefully...");
+    logger.LogInformation("\ud83d\udd34 Cancellation received. Terminating Connections Gracefully...");
     cancellationSource.Cancel();
     await remote.TerminatePairingAsync();
     Thread.Sleep(3000);
