@@ -73,11 +73,7 @@ public class EWRemoteSimulator : IEWRemoteSimulator
 
     private void RunHeartBeats(int sendEveryMs, CancellationToken cancellationToken)
     {
-        var heartBeatThread = new Thread(StartHeartBeatAsync);
-        heartBeatThread.Start();
-        return;
-
-        async void StartHeartBeatAsync()
+        Task.Run(async () =>
         {
             while (!cancellationToken.IsCancellationRequested)
             {
@@ -87,23 +83,19 @@ public class EWRemoteSimulator : IEWRemoteSimulator
                 }
                 catch (Exception exception)
                 {
-                    _logger.LogError(exception, exception.Message);
+                    _logger.LogError($"\ud83d\udc94 Heartbeat stopped with exception: {exception.Message}");
                 }
             
                 Thread.Sleep(sendEveryMs);
             }
             
-            _logger.LogDebug("Heartbeat stopped gracefully");
-        }
+            _logger.LogInformation("\ud83d\udc4b Heartbeat stopped gracefully");
+        }, cancellationToken);
     }
     
     private void RunReceiveJob(CancellationToken cancellationToken)
     {
-        var heartBeatThread = new Thread(StartReceiveAsync);
-        heartBeatThread.Start();
-        return;
-
-        async void StartReceiveAsync()
+        Task.Run(async () =>
         {
             while (!cancellationToken.IsCancellationRequested)
             {
@@ -122,7 +114,7 @@ public class EWRemoteSimulator : IEWRemoteSimulator
                             Status = JsonSerializer.Deserialize<Status>(received, _deSerializerOptions) ?? new Status();
                             if (Status.Permissions is 0)
                             {
-                                _logger.LogInformation("\ud83d\udd10 Remote permission read-only. Please reach our to EW admin.");
+                                _logger.LogInformation("\ud83d\udd10 Readonly mode. Please reach our to EW admin.");
                             }
 
                             if (Status.Permissions is 1 && previousPermissions is 0)
@@ -138,18 +130,22 @@ public class EWRemoteSimulator : IEWRemoteSimulator
                         
                         if (received.IsPairedMessage())
                         {
-                            _logger.LogInformation("\ud83d\udfe2 Remote connected and paired");
+                            var modeMessage = Status.Permissions is 1
+                                ? "You can start using the app now!"
+                                : "Readonly Mode. Please reach out to EW admin.";
+                            _logger.LogInformation($"\ud83d\udfe2 Remote connected and paired. {modeMessage}");
                         }
                     }
                 }
                 catch (Exception exception)
                 {
-                    _logger.LogError($"\u2620\ufe0f {exception.Message}");
+                    _logger.LogError($"\u2620\ufe0f Reception stopped with exception: {exception.Message}");
                     _logger.LogDebug(exception.StackTrace);
                     if (exception.Message.Contains("Connection reset by peer", StringComparison.OrdinalIgnoreCase))
                     {
                         try
                         {
+                            _logger.LogInformation($"\ud83d\udd59 Trying to reconnect...");
                             await _client.DisconnectAsync();
                             await _client.ConnectAsync();
                             await _client.SendAsync(Messages.PairingRequest);
@@ -163,8 +159,10 @@ public class EWRemoteSimulator : IEWRemoteSimulator
 
                 Thread.Sleep(500);
             }
-            _logger.LogDebug("Listening stopped gracefully");
-        }
+            
+            _logger.LogInformation("\ud83d\udc4b Listening stopped gracefully");
+
+        }, cancellationToken);
     }
 
     public void Dispose()

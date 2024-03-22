@@ -5,13 +5,12 @@ using System.Text;
 
 namespace ClicketyClack.Core;
 
-public class EWCLient : IEWClient
+public class EWClient : IEWClient
 {
     private readonly Socket _client;
     private readonly IPEndPoint _ipEndPoint;
 
-
-    public EWCLient(string ipAddress, int port)
+    public EWClient(string ipAddress, int port)
     {
         _ipEndPoint = new IPEndPoint(IPAddress.Parse(ipAddress), port);
         _client = new Socket(
