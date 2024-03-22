@@ -148,7 +148,7 @@ public class EWRemoteSimulator : IEWRemoteSimulator
 
                         if (received.IsNotPairedMessage())
                         {
-                            _logger.LogInformation("\ud83d\udfe1 Remote connected but NOT paired. Please reach our to EW admin.");
+                            _logger.LogInformation("\u26aa Remote connected but NOT paired. Please reach our to EW admin.");
                         }
                         
                         if (received.IsPairedMessage())
@@ -156,7 +156,7 @@ public class EWRemoteSimulator : IEWRemoteSimulator
                             var modeMessage = Status.Permissions is 1
                                 ? "You can start using the app now!"
                                 : "Readonly Mode. Please reach out to EW admin.";
-                            _logger.LogInformation($"\ud83d\udfe2 Remote connected and paired. {modeMessage}");
+                            _logger.LogInformation($"\ud83d\udc9a Remote connected and paired. {modeMessage}");
                         }
                     }
                 }
@@ -164,21 +164,6 @@ public class EWRemoteSimulator : IEWRemoteSimulator
                 {
                     _logger.LogError($"\u2620\ufe0f Reception failed exception: {exception.Message}");
                     _logger.LogDebug(exception.StackTrace);
-                    if (exception.Message.IsConnetionResetMessage())
-                    {
-                        try
-                        {
-                            // _logger.LogInformation($"\ud83d\udd59 Receiver Trying to reconnect...");
-                            // await _client.DisconnectAsync();
-                            // var serverInfo = await _finder.FindAsync();
-                            // await _client.ConnectAsync(serverInfo);
-                            // await _client.SendAsync(Messages.PairingRequest);
-                        }
-                        catch (Exception ex)
-                        {
-                            _logger.LogDebug(ex.StackTrace);
-                        }
-                    }
                 }
 
                 Thread.Sleep(500);
