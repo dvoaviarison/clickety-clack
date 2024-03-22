@@ -92,6 +92,21 @@ public class EWRemoteSimulator : IEWRemoteSimulator
                 catch (Exception exception)
                 {
                     _logger.LogError($"\ud83d\udc94 Heartbeat failed to pump: {exception.Message}");
+                    if (exception.Message.IsBrokenPipeMessage())
+                    {
+                        try
+                        {
+                            _logger.LogInformation($"\ud83d\udd59 Heartbeat Trying to reconnect...");
+                            await _client.DisconnectAsync();
+                            var serverInfo = await _finder.FindAsync();
+                            await _client.ConnectAsync(serverInfo);
+                            await _client.SendAsync(Messages.PairingRequest);
+                        }
+                        catch (Exception ex)
+                        {
+                            _logger.LogDebug(ex.StackTrace);
+                        }
+                    }
                 }
             
                 Thread.Sleep(sendEveryMs);
@@ -149,19 +164,19 @@ public class EWRemoteSimulator : IEWRemoteSimulator
                 {
                     _logger.LogError($"\u2620\ufe0f Reception failed exception: {exception.Message}");
                     _logger.LogDebug(exception.StackTrace);
-                    if (exception.Message.Contains("Connection reset by peer", StringComparison.OrdinalIgnoreCase))
+                    if (exception.Message.IsConnetionResetMessage())
                     {
                         try
                         {
-                            _logger.LogInformation($"\ud83d\udd59 Receiver Trying to reconnect...");
-                            await _client.DisconnectAsync();
-                            var serverInfo = await _finder.FindAsync();
-                            await _client.ConnectAsync(serverInfo);
-                            await _client.SendAsync(Messages.PairingRequest);
+                            // _logger.LogInformation($"\ud83d\udd59 Receiver Trying to reconnect...");
+                            // await _client.DisconnectAsync();
+                            // var serverInfo = await _finder.FindAsync();
+                            // await _client.ConnectAsync(serverInfo);
+                            // await _client.SendAsync(Messages.PairingRequest);
                         }
-                        catch (Exception)
+                        catch (Exception ex)
                         {
-                            // ignored
+                            _logger.LogDebug(ex.StackTrace);
                         }
                     }
                 }
