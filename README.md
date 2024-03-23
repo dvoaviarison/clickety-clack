@@ -16,6 +16,9 @@ Why Choose Complexity Over Simplicity?
 
   ![Architecture](./docs/imgs/ClicketyClack.png)
 
+## Pre-req.
+- Install dotnet runtime ([.Net8](https://dotnet.microsoft.com/en-us/download/dotnet/8.0))
+
 ## How to use
 This app is cross platform and can be used in Windows, Linux or MacOS.
 
