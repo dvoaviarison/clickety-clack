@@ -8,6 +8,7 @@ on:
 
 env:
   PROJECT_NAME: ClicketyClack
+  EXECUTABLE_NAME: ClicketyClack.ConsoleHost
   PROJECT_PATH: src/ClicketyClack.ConsoleHost/ClicketyClack.ConsoleHost.csproj
   WIN_PUBLISH_PATH: src/ClicketyClack.ConsoleHost/bin/Release/net8.0/win-x64/publish/
   LINUX_PUBLISH_PATH: src/ClicketyClack.ConsoleHost/bin/Release/net8.0/linux-x64/publish/
@@ -63,9 +64,10 @@ jobs:
 
     - name: Publish App
       run: |
-        dotnet publish ${{ env.PROJECT_PATH }} -c Release --runtime win-x64 -p:IncludeNativeLibrariesForSelfExtract=true --self-contained true 
-        dotnet publish ${{ env.PROJECT_PATH }} -c Release --runtime linux-x64 -p:IncludeNativeLibrariesForSelfExtract=true --self-contained true
-        dotnet publish ${{ env.PROJECT_PATH }} -c Release --runtime osx-arm64 -p:IncludeNativeLibrariesForSelfExtract=true --self-contained true
+        dotnet publish ${{ env.PROJECT_PATH }} -c Release --runtime win-x64 --self-contained true 
+        dotnet publish ${{ env.PROJECT_PATH }} -c Release --runtime linux-x64 --self-contained true
+        dotnet publish ${{ env.PROJECT_PATH }} -c Release --runtime osx-arm64 --self-contained true
+        mv ${{ env.OSX_PUBLISH_PATH }}${{ env.EXECUTABLE_NAME }} ${{ env.OSX_PUBLISH_PATH }}${{ env.EXECUTABLE_NAME }}.command
   
     - name: Create Zip File for Windows
       uses: papeloto/action-zip@v1
@@ -87,14 +89,14 @@ jobs:
           
     - name: Create Release Tag
       id: create_release_tag
-      if: ${{ github.ref == 'refs/heads/main' && success() }}
+      #if: ${{ github.ref == 'refs/heads/main' && success() }}
       run: |
         git tag ${{ steps.version.outputs.version }}
         git push --tags
         
     - name: Create Release
       id: create_release
-      if: ${{ github.ref == 'refs/heads/main' && success() }}
+      #if: ${{ github.ref == 'refs/heads/main' && success() }}
       uses: ncipollo/release-action@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -105,7 +107,7 @@ jobs:
         prerelease: false
         
     - name: Upload Linux Zip
-      if: ${{ github.ref == 'refs/heads/main' && success() }}
+      #if: ${{ github.ref == 'refs/heads/main' && success() }}
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -116,7 +118,7 @@ jobs:
         asset_content_type: application/zip
         
     - name: Upload Windows Zip
-      if: ${{ github.ref == 'refs/heads/main' && success() }}
+      #if: ${{ github.ref == 'refs/heads/main' && success() }}
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -127,7 +129,7 @@ jobs:
         asset_content_type: application/zip
         
     - name: Upload MacOS Zip
-      if: ${{ github.ref == 'refs/heads/main' && success() }}
+      #if: ${{ github.ref == 'refs/heads/main' && success() }}
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
