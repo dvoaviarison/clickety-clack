@@ -11,8 +11,7 @@ Why Choose Complexity Over Simplicity?
    - **Phone App Solution**: The EW Remote App unlocks Easy-Worship, but it’s sensitive and distracting.
 - **Ideal Solution**: 
    - **Clickety-Clack**: Slide control without locking down the main computer. Best of both worlds! 🍌💡.
-   - Here is how it works 
-
+   - Here is how it works
 
   ![Architecture](./docs/imgs/ClicketyClack.png)
 
@@ -29,11 +28,14 @@ Download latest version [HERE](https://github.com/dvoaviarison/Clickety-Clack/re
   ```bash
    chmod +x ClicketyClack.ConsoleHost
    ```
-- For MacOS: Double click on `ClicketyClack.ConsoleHost.command`.
-
-  You will need to run this one time command line first, to give permissipn to execute 
-  ```bash
-   chmod +x ClicketyClack.ConsoleHost.command
+- For MacOS: One of two options
+  1. Run the following command line from within the app folder
+   ```bash
+   dotnet ClicketyClack.ConsoleHost.dll
+   ```
+  2. Double click on `run-mac.command` after allowing it to execute by running this command from within the app folder (this is a one time process)
+   ```bash
+   chmod +x run-mac.command
    ```
 ![Screenshot](./docs/imgs/ClicketyClack.gif)
 
