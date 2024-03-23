@@ -16,9 +16,6 @@ Why Choose Complexity Over Simplicity?
 
   ![Architecture](./docs/imgs/ClicketyClack.png)
 
-## Pre-req.
-- Install dotnet runtime ([.Net8](https://dotnet.microsoft.com/en-us/download/dotnet/8.0))
-
 ## How to use
 This app is cross platform and can be used in Windows, Linux or MacOS.
 
@@ -28,9 +25,13 @@ Download latest version [HERE](https://github.com/dvoaviarison/Clickety-Clack/re
   ```bash
   ./ClicketyClack.ConsoleHost
   ```
+  You will need to run this one time command line first, to give permissipn to execute
+  ```bash
+   chmod +x ClicketyClack.ConsoleHost
+   ```
 - For MacOS: Double click on `ClicketyClack.ConsoleHost.command`.
 
-  You might need to run this one time command line first, to give permissipn to execute 
+  You will need to run this one time command line first, to give permissipn to execute 
   ```bash
    chmod +x ClicketyClack.ConsoleHost.command
    ```

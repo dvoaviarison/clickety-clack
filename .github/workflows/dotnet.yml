@@ -89,14 +89,14 @@ jobs:
           
     - name: Create Release Tag
       id: create_release_tag
-      if: ${{ github.ref == 'refs/heads/main' && success() }}
+      #if: ${{ github.ref == 'refs/heads/main' && success() }}
       run: |
         git tag ${{ steps.version.outputs.version }}
         git push --tags
         
     - name: Create Release
       id: create_release
-      if: ${{ github.ref == 'refs/heads/main' && success() }}
+      #if: ${{ github.ref == 'refs/heads/main' && success() }}
       uses: ncipollo/release-action@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -107,7 +107,7 @@ jobs:
         prerelease: false
         
     - name: Upload Linux Zip
-      if: ${{ github.ref == 'refs/heads/main' && success() }}
+      #if: ${{ github.ref == 'refs/heads/main' && success() }}
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -118,7 +118,7 @@ jobs:
         asset_content_type: application/zip
         
     - name: Upload Windows Zip
-      if: ${{ github.ref == 'refs/heads/main' && success() }}
+      #if: ${{ github.ref == 'refs/heads/main' && success() }}
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -129,7 +129,7 @@ jobs:
         asset_content_type: application/zip
         
     - name: Upload MacOS Zip
-      if: ${{ github.ref == 'refs/heads/main' && success() }}
+      #if: ${{ github.ref == 'refs/heads/main' && success() }}
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
