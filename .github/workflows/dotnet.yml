@@ -8,6 +8,7 @@ on:
 
 env:
   PROJECT_NAME: ClicketyClack
+  EXECUTABLE_NAME: ClicketyClack.ConsoleHost
   PROJECT_PATH: src/ClicketyClack.ConsoleHost/ClicketyClack.ConsoleHost.csproj
   WIN_PUBLISH_PATH: src/ClicketyClack.ConsoleHost/bin/Release/net8.0/win-x64/publish/
   LINUX_PUBLISH_PATH: src/ClicketyClack.ConsoleHost/bin/Release/net8.0/linux-x64/publish/
@@ -63,9 +64,10 @@ jobs:
 
     - name: Publish App
       run: |
-        dotnet publish ${{ env.PROJECT_PATH }} -c Release --runtime win-x64 -p:IncludeNativeLibrariesForSelfExtract=true --self-contained true 
-        dotnet publish ${{ env.PROJECT_PATH }} -c Release --runtime linux-x64 -p:IncludeNativeLibrariesForSelfExtract=true --self-contained true
-        dotnet publish ${{ env.PROJECT_PATH }} -c Release --runtime osx-arm64 -p:IncludeNativeLibrariesForSelfExtract=true --self-contained true
+        dotnet publish ${{ env.PROJECT_PATH }} -c Release --runtime win-x64 --self-contained true /p:DebugType=None /p:DebugSymbols=false
+        dotnet publish ${{ env.PROJECT_PATH }} -c Release --runtime linux-x64 --self-contained true /p:DebugType=None /p:DebugSymbols=false
+        dotnet publish ${{ env.PROJECT_PATH }} -c Release --runtime osx-arm64 --self-contained true /p:DebugType=None /p:DebugSymbols=false
+        mv ${{ env.OSX_PUBLISH_PATH }}${{ env.EXECUTABLE_NAME }} ${{ env.OSX_PUBLISH_PATH }}${{ env.EXECUTABLE_NAME }}.command
   
     - name: Create Zip File for Windows
       uses: papeloto/action-zip@v1
