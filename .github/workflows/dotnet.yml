@@ -64,9 +64,9 @@ jobs:
 
     - name: Publish App
       run: |
-        dotnet publish ${{ env.PROJECT_PATH }} -c Release --runtime win-x64 --self-contained true /p:DebugType=None /p:DebugSymbols=false
-        dotnet publish ${{ env.PROJECT_PATH }} -c Release --runtime linux-x64 --self-contained true /p:DebugType=None /p:DebugSymbols=false
-        dotnet publish ${{ env.PROJECT_PATH }} -c Release --runtime osx-arm64 --self-contained true /p:DebugType=None /p:DebugSymbols=false
+        dotnet publish ${{ env.PROJECT_PATH }} -c Release --runtime win-x64 --self-contained true
+        dotnet publish ${{ env.PROJECT_PATH }} -c Release --runtime linux-x64 --self-contained true
+        dotnet publish ${{ env.PROJECT_PATH }} -c Release --runtime osx-arm64 --self-contained true
         mv ${{ env.OSX_PUBLISH_PATH }}${{ env.EXECUTABLE_NAME }} ${{ env.OSX_PUBLISH_PATH }}${{ env.EXECUTABLE_NAME }}.command
   
     - name: Create Zip File for Windows
