@@ -21,10 +21,19 @@ This app is cross platform and can be used in Windows, Linux or MacOS.
 
 Download latest version [HERE](https://github.com/dvoaviarison/Clickety-Clack/releases) and extract the zip file
 - For windows: Double click on `ClicketyClack.ConsoleHost.exe`
-- For Linux and MacOS: Run the following command line from within the app folder
+- For Linux Run the following command line from within the app folder
 ```bash
 dotnet ClicketyClack.ConsoleHost.dll
-```
+``` 
+- For MacOS: One of two options
+   1. Run the following command line from within the app folder
+   ```bash
+   dotnet ClicketyClack.ConsoleHost.dll
+   ```
+   2. Double click on `run-mac.command` after allowing it to execute by running this command from within the app folder (this is a one time process)
+   ```bash
+   chmod +x run-mac.command
+   ```
 ![Screenshot](./docs/imgs/ClicketyClack.gif)
 
 ## Want to contribute
