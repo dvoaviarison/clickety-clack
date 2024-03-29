@@ -11,7 +11,7 @@ public class EWRemoteSimulator : IEWRemoteSimulator
     private readonly IEWServerFinder _finder;
     private readonly IEWClient _client;
     private readonly ILogger<EWRemoteSimulator> _logger;
-    private const int HeartBeatsEveryMs = 3000;
+    private const int HeartBeatsEveryMs = 8000;
     private Status Status { get; set; } = new();
     private readonly JsonSerializerOptions _deSerializerOptions = new()
     {
